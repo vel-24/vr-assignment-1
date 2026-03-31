@@ -14,20 +14,25 @@
     AFRAME.registerComponent('show-item', {
       schema: {
         message: { type: 'string' },
-        model: { type: 'selector' }
+        model: { type: 'string' }   // ✅ FIXED
       },
 
       init: function () {
         this.el.addEventListener('click', () => {
 
+          // Update title text
           document.querySelector('#infoText')
             .setAttribute('value', this.data.message);
 
+          // Hide all models
           document.querySelectorAll('.furniture-model')
             .forEach(m => m.setAttribute('visible', false));
 
-          if (this.data.model) {
-            this.data.model.setAttribute('visible', true);
+          // Show selected model (FIXED LOGIC)
+          const selectedModel = document.querySelector(this.data.model);
+
+          if (selectedModel) {
+            selectedModel.setAttribute('visible', true);
           }
         });
       }
@@ -68,11 +73,11 @@
           color="#333">
   </a-text>
 
-  <!-- 3D MODELS -->
+  <!-- ================== 3D MODELS ================== -->
 
   <!-- Table -->
   <a-entity id="table3D" class="furniture-model"
-            gltf-model="url(hexagonal_table_01.glb)"
+            gltf-model="url(models/hexagonal_table_01.glb)"
             position="0 0 2"
             scale="1 1 1"
             visible="false"
@@ -81,7 +86,7 @@
 
   <!-- Chair -->
   <a-entity id="chair3D" class="furniture-model"
-            gltf-model="url(chair.glb)"
+            gltf-model="url(models/chair.glb)"
             position="0 0 2"
             scale="1 1 1"
             visible="false"
@@ -90,18 +95,18 @@
 
   <!-- Sofa -->
   <a-entity id="sofa3D" class="furniture-model"
-            gltf-model="url(modern_sofa.glb)"
+            gltf-model="url(models/modern_sofa.glb)"
             position="0 0 2"
             scale="1 1 1"
             visible="false"
             animation="property: rotation; to: 0 360 0; loop: true; dur: 12000">
   </a-entity>
 
-  <!-- CLICKABLE PANELS -->
+  <!-- ================== CLICK PANELS ================== -->
 
   <!-- Table -->
   <a-plane class="clickable"
-           src="table.jpg"
+           src="images/table.jpg"
            position="-3 1.8 -5.9"
            width="2" height="2"
            show-item="message: Wooden Table; model: #table3D">
@@ -109,7 +114,7 @@
 
   <!-- Chair -->
   <a-plane class="clickable"
-           src="chair.jpg"
+           src="images/chair.jpg"
            position="0 1.8 -5.9"
            width="2" height="2"
            show-item="message: Comfortable Chair; model: #chair3D">
@@ -117,7 +122,7 @@
 
   <!-- Sofa -->
   <a-plane class="clickable"
-           src="sofa.jpg"
+           src="images/sofa.jpg"
            position="3 1.8 -5.9"
            width="2" height="2"
            show-item="message: Modern Sofa; model: #sofa3D">
